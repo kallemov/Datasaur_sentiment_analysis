@@ -3,8 +3,13 @@ Datasaur.ai consulting project
 
 ## Requisites
 
-- List all packages and software needed to build the environment
-- This could include cloud command line tools (i.e. gsutil), package managers (i.e. conda), etc.
+python==3.7.4
+pandas==0.25.1
+torch==1.4.0
+tqdm==4.36.1
+transformers==2.10.0
+numpy==1.17.2
+scikit_learn==0.23.1
 
 #### Dependencies
 
@@ -13,35 +18,33 @@ Datasaur.ai consulting project
 #### Installation
 To install the package above, pleae run:
 ```shell
-pip install -r requiremnts
+pip install -r requirements
 ```
 
 ## Build Environment
-- Include instructions of how to launch scripts in the build subfolder
-- Build scripts can include shell scripts or python setup.py files
-- The purpose of these scripts is to build a standalone environment, for running the code in this repository
-- The environment can be for local use, or for use in a cloud environment
-- If using for a cloud environment, commands could include CLI tools from a cloud provider (i.e. gsutil from Google Cloud Platform)
-```
-# Example
 
-# Step 1
-# Step 2
+to requests all command line parameters for training and evaluation run
+
+$ python train.py --help
+
+
+# Training
+
+$ python train.py --dataroot <your_data_source> 
 ```
+
+The dataloader currently accepts csv and json formats of input files for training
+
+There is a default datasets for binary and multi-class (positive/negative/neutral) sentiment analysis training constructed from three publicly available datasets 
+
 
 ## Configs
-- We recommond using either .yaml or .txt for your config files, not .json
-- **DO NOT STORE CREDENTIALS IN THE CONFIG DIRECTORY!!**
-- If credentials are needed, use environment variables or HashiCorp's [Vault](https://www.vaultproject.io/)
-
 
 ## Test
 - Include instructions for how to run all tests after the software is installed
 ```
 # Example
 
-# Step 1
-# Step 2
 ```
 
 ## Run Inference
@@ -54,32 +57,4 @@ pip install -r requiremnts
 # Step 2
 ```
 
-## Build Model
-- Include instructions of how to build the model
-- This can be done either locally or on the cloud
-```
-# Example
 
-# Step 1
-# Step 2
-```
-
-## Serve Model
-- Include instructions of how to set up a REST or RPC endpoint
-- This is for running remote inference via a custom model
-```
-# Example
-
-# Step 1
-# Step 2
-```
-
-## Analysis
-- Include some form of EDA (exploratory data analysis)
-- And/or include benchmarking of the model and results
-```
-# Example
-
-# Step 1
-# Step 2
-```
