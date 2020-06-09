@@ -11,6 +11,7 @@ class BaseOptions():
      def initialize(self, parser):
           """Define the common options that are used in both training and test."""
           # basic parameters
+          parser.add_argument('--dataroot', required=True, help='path to dataset; expects labeled data for training mode')
           parser.add_argument('--sentiment_analysis_type', type=str, default='polarity', help='type for the sentiment analysis classification [ polarity | emmotions | violence | stress] default is polarity')
           parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
           parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='temporal model parameters are saved here')

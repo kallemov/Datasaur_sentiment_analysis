@@ -5,7 +5,7 @@ import torch
 from utils.train_opt import TrainOptions
 from models import create_model
 from tqdm import tqdm
-from data import  create_dataset
+from data import  create_training_data
 from utils.metrics import f1_score_func, accuracy_per_class
 
 def seed_random(seed_val):
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     seed_random(opt.seed)
 
     #load data for training
-    train_data, train_labels, val_data, val_labels = create_dataset(opt)
+    train_data, train_labels, val_data, val_labels = create_training_data(opt)
     
     model = create_model(opt)      # create a model given opt.model and other options
     dataloader_train = model.create_dataloader(opt, train_data, train_labels, randomSample=True)  # create a data_loader

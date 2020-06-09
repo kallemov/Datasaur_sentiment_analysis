@@ -36,9 +36,12 @@ class bertmodel(BaseModel):
 
         input_ids = encoded_data['input_ids']
         attention_masks = encoded_data['attention_mask']
-        labels = torch.tensor(labels)
-
-        dataset = TensorDataset(input_ids, attention_masks, labels)
+        if labels is not None:
+            labels = torch.tensor(labels)
+            dataset = TensorDataset(input_ids, attention_masks, labels)
+        else:
+            dataset = TensorDataset(input_ids, attention_masks)
+            
         if randomSample:
             samp=RandomSampler(dataset)
         else:
@@ -108,3 +111,27 @@ class bertmodel(BaseModel):
         true_vals = np.concatenate(true_vals, axis=0)
             
         return loss_val_avg, predictions, true_vals
+
+
+    def predict(self,dataloader):
+
+        self.net.eval()
+    
+        predictions = []
+        total_score=[0]*self.number_sentiments
+        for batch in dataloader:
+        
+            batch = tuple(b.to(self.device) for b in batch)
+        
+            inputs = {'input_ids':      batch[0],
+                      'attention_mask': batch[1],
+            }
+
+            with torch.no_grad():        
+                outputs = self.net(**inputs)
+                scores=torch.max(torch.nn.Softmax(dim=1)(outputs[0]),axis=1)
+                for i,x in enumerate(scores[0]):
+                    ind=int(scores[1][i])
+                    predictions.append((ind,round(float(x),4)))
+                    total_score[ind] +=float(x)
+        return predictions, total_score

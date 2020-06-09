@@ -5,7 +5,6 @@ class TrainOptions(BaseOptions):
 
     def initialize(self, parser):
         parser = BaseOptions.initialize(self, parser)
-        parser.add_argument('--dataroot', required=True, help='path to dataset with labeled data for training')
         parser.add_argument('--data_samples_max_size', type=int, default=20000, help='max number of samples in dataset for training')
 
         parser.add_argument('--print_freq', type=int, default=1, help='frequency of showing training results on console')

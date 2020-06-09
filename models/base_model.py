@@ -11,7 +11,8 @@ class BaseModel():
         self.isTrain = opt.isTrain
         self.device = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')  # get device name: CPU or GPU
         self.save_dir = os.path.join(opt.checkpoints_dir, opt.name)  # save all the checkpoints to save_dir
-
+        self.number_sentiments=opt.number_sentiments
+        
     @staticmethod
     def modify_commandline_options(self,parser):
         return parser
@@ -40,12 +41,16 @@ class BaseModel():
         if not self.isTrain or opt.continue_train:
             self.load_networks(opt.load_epoch)
 
+        #no need to create a special call for eval     
+        if not self.isTrain:
+            self.net.eval()
+            
         self.print_networks(opt.verbose)
         
     def set_train(self):
            self.net.train()
 
-    def predict(self):
+    def predict(self,dataloader):
         pass
 
     def evaluate(self,dataloader_val):
