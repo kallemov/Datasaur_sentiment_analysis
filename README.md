@@ -3,13 +3,7 @@ Datasaur.ai consulting project
 
 ## Requisites
 
-python==3.7.4
-pandas==0.25.1
-torch==1.4.0
-tqdm==4.36.1
-transformers==2.10.0
-numpy==1.17.2
-scikit_learn==0.23.1
+can be found in requirements.txt
 
 #### Dependencies
 
@@ -47,9 +41,7 @@ There is a default datasets for binary and multi-class (positive/negative/neutra
 
 ```
 
-## Run Inference
-- Include instructions on how to run inference
-- i.e. image classification on a single image for a CNN deep learning project
+
 ```
 # Example
 
