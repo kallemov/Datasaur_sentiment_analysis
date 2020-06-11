@@ -7,7 +7,7 @@ class TrainOptions(BaseOptions):
         parser = BaseOptions.initialize(self, parser)
         parser.add_argument('--data_samples_max_size', type=int, default=20000, help='max number of samples in dataset for training')
 
-        parser.add_argument('--print_freq', type=int, default=1, help='frequency of showing training results on console')
+        parser.add_argument('--print_freq', type=int, default=100, help='frequency of showing training results on console')
         parser.add_argument('--save_epoch_freq', type=int, default=3, help='frequency of saving checkpoints at the end of epochs')
         parser.add_argument('--continue_train', action='store_true', help='continue training: load the latest model')
         parser.add_argument('--epoch_start', type=int, default=1, help='the starting epoch')

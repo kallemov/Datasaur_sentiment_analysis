@@ -25,8 +25,7 @@ def create_polarity_data(opt):
             print("%s file type is not supported." % dataset_name)
             exit(0)
         if opt.isTrain:
-            label_dict = {'positive':0, 'negative':1, 'neutral':2}
-            df['sentiment'] = df.sentiment.replace(label_dict)
+            df['sentiment'] = df.sentiment.replace(opt.label_dict)
             if df.shape[0]>opt.data_samples_max_size:
                 df=df.sample(n=opt.data_samples_max_size,axis=0)
             X_train, X_val, y_train, y_val = train_test_split(df.text.values, 

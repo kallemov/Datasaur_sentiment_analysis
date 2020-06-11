@@ -58,14 +58,14 @@ class BaseModel():
             
     def save_networks(self, epoch):
         if issubclass(self.__class__, BaseModel):
-            save_filename = '%s_net_%s.pth' % (epoch, str(self.__class__))
+            save_filename = '%s_net_%s.pth' % (epoch, self.__class__.__name__)
             save_path = os.path.join(self.save_dir, save_filename)
             
             torch.save(self.net.state_dict(), save_path)
 
     def load_networks(self, epoch):
         if issubclass(self.__class__, BaseModel):
-            load_filename = '%s_net_%s.pth' % (epoch, str(self.__class__))
+            load_filename = '%s_net_%s.pth' % (epoch, self.__class__.__name__)
             load_path = os.path.join(self.save_dir, load_filename)
 
             self.net.load_state_dict(torch.load(load_path, map_location=self.device))

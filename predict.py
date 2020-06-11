@@ -20,7 +20,6 @@ if __name__ == '__main__':
     scores, total_score = model.predict(dataloader)
     print('Time Taken: %d sec' % (time.time() - start_time))
 
-    dic={0:'positive',1:'negative',2:'neutral'}
-    scores=[(dic[x[0]],x[1]) for x in scores]
+    scores=[(opt.label_dict[x[0]],x[1]) for x in scores]
     overall_sentiment = dic[total_score.index(max(total_score))]
     print(scores, "\t overall sentiment is %s"%overall_sentiment)

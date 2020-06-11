@@ -87,6 +87,12 @@ class BaseOptions():
                 opt.gpu_ids.append(id)
         if len(opt.gpu_ids) > 0:
             torch.cuda.set_device(opt.gpu_ids[0])
+            
+        if opt.sentiment_analysis_type=='polarity':
+          if opt.number_sentiments==2:
+               opt.label_dict = {'positive':0, 'negative':1}
+          elif opt.number_sentiments==3:
+               opt.label_dict = {'positive':0, 'negative':1, 'neutral':2}
 
         self.opt = opt
         return self.opt
