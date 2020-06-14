@@ -1,5 +1,11 @@
-#Datasaur sentiment analysis 
+##AutoSAL: Automated Sentiment Analysis Labeling
+
+This is the Insight AI Felllowship AISV20B project 
 Datasaur.ai consulting project
+The goal of this project is to develop, implement and deploy a automatic sentiment analysis for the Datasaur.ai labeling software
+
+#Project description
+
 
 ## Requisites
 
@@ -11,7 +17,7 @@ can be found in requirements.txt
 - [Streamlit](streamlit.io)
 
 #### Installation
-To install the package above, pleae run:
+To install the package above, please run:
 ```shell
 pip install -r requirements
 ```
