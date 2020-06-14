@@ -13,6 +13,7 @@ class BaseOptions():
           # basic parameters
           parser.add_argument('--dataroot', required=True, help='path to dataset; expects labeled data for training mode')
           parser.add_argument('--sentiment_analysis_type', type=str, default='polarity', help='type for the sentiment analysis classification [ polarity | emmotions | violence | stress] default is polarity')
+          parser.add_argument('--disable_word_importance', action='store_true', help='disable word importantce output in the model; Use for perfomance.')
           parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
           parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='temporal model parameters are saved here')
           # model parameters
@@ -93,6 +94,6 @@ class BaseOptions():
                opt.label_dict = {'positive':0, 'negative':1}
           elif opt.number_sentiments==3:
                opt.label_dict = {'positive':0, 'negative':1, 'neutral':2}
-
+          opt.inv_label_dict={y:x for x,y in opt.label_dict.items()}
         self.opt = opt
         return self.opt

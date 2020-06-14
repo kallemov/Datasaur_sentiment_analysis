@@ -6,7 +6,7 @@ from utils.train_opt import TrainOptions
 from models import create_model
 from tqdm import tqdm
 from data import  create_training_data
-from utils.metrics import f1_score_func, classification_report_func
+from utils import metrics 
 from torch.utils.tensorboard import SummaryWriter
 
 def seed_random(seed_val):
@@ -74,8 +74,8 @@ if __name__ == '__main__':
        
         tqdm.write(f'Training loss: {loss_train_avg}')
         tqdm.write(f'Validation loss: {val_loss}')
-        tqdm.write(f'F1 Score (Weighted): {f1_score_func(predictions, true_vals)}')
-        tqdm.write(classification_report_func(predictions, true_vals,opt.label_dict.keys()))
+        tqdm.write(f'F1 Score (Weighted): {metrics.f1_score_func(predictions, true_vals)}')
+        tqdm.write(metrics.classification_report_func(predictions, true_vals,opt.label_dict.keys()))
         tqdm.write(f'End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.num_epochs, time.time() - epoch_start_time))
         
         writer.add_scalars('Total loss', {'training loss':loss_train_avg,'validation loss':val_loss}, total_iters)

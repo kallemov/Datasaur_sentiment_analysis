@@ -12,6 +12,7 @@ class BaseModel():
         self.device = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')  # get device name: CPU or GPU
         self.save_dir = os.path.join(opt.checkpoints_dir, opt.name)  # save all the checkpoints to save_dir
         self.number_sentiments=opt.number_sentiments
+        self.interpretation_model=None
         
     @staticmethod
     def modify_commandline_options(self,parser):
@@ -44,9 +45,16 @@ class BaseModel():
         #no need to create a special call for eval     
         if not self.isTrain:
             self.net.eval()
+
+        #initialize word importance ranking model    
+        if not opt.disable_word_importance:            
+            self.setup_interpretation_model()
             
         self.print_networks(opt.verbose)
-        
+
+    def setup_interpretation_model(self):
+        pass
+    
     def set_train(self):
            self.net.train()
 

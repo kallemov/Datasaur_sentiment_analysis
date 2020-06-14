@@ -3,13 +3,14 @@ import numpy as np
 from .base_model import BaseModel
 from transformers import BertForSequenceClassification, BertTokenizer
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
+from .captum_bert import captum_bert
 
 class bertmodel(BaseModel):
     def modify_commandline_options(self,parser):
         parser.add_argument('--output_attentions', action='store_true', help='output attentions in bert model')
-        parser.add_argument('--output_hidden_states', action='store_false', help='output hidden states in bert model')
+        parser.add_argument('--captum_visualization', action='store_true', help='visualize word importance')
         parser.add_argument('--pretrained_model_name', type=str, default="bert-base-uncased", help='bert pretrained model name')
-
+        parser.add_argument('--num_captum_iterations', type=int, default=100, help='number of iteration for the captum model. default is 100')
         return parser
 
     def __init__(self, opt):
@@ -18,14 +19,17 @@ class bertmodel(BaseModel):
         self.net = BertForSequenceClassification.from_pretrained(opt.pretrained_model_name,
                                                                  num_labels=opt.number_sentiments,
                                                                  output_attentions=opt.output_attentions,
-                                                                 output_hidden_states=opt.output_hidden_states)	
+                                                                 output_hidden_states=(not opt.disable_word_importance))	
         self.net.to(self.device)
 
+    def setup_interpretation_model(self):
+        self.interpretation_model = captum_bert(self.opt)
+        self.interpretation_model.setup(self.net)
 
     def create_dataloader(self,opt, data, labels=None, randomSample=True):
         
-        tokenizer = BertTokenizer.from_pretrained(opt.pretrained_model_name, do_lower_case=True)
-        encoded_data = tokenizer.batch_encode_plus(
+        self.tokenizer = BertTokenizer.from_pretrained(opt.pretrained_model_name, do_lower_case=True)
+        encoded_data = self.tokenizer.batch_encode_plus(
             data, 
             add_special_tokens=True, 
             return_attention_mask=True, 
@@ -117,7 +121,9 @@ class bertmodel(BaseModel):
 
         self.net.eval()
     
-        predictions = []
+        predictions  =[]
+        attributions =[]
+        
         total_score=[0]*self.number_sentiments
         for batch in dataloader:
         
@@ -134,4 +140,17 @@ class bertmodel(BaseModel):
                     ind=int(scores[1][i])
                     predictions.append((ind,round(float(x),4)))
                     total_score[ind] +=float(x)
-        return predictions, total_score
+                    if not self.opt.disable_word_importance:
+                        input_ids, embeddings = inputs['input_ids'][i], outputs[1][0][i]
+                        tokens = self.tokenizer.convert_ids_to_tokens(input_ids)
+                        try:
+                            pad_index=tokens.index('[PAD]')
+                            tokens=tokens[:pad_index]
+                            embeddings=embeddings[:pad_index,:]
+                        except:
+                            pass
+                        #get attributes for the class ind
+                        attribution = self.interpretation_model.interpret_sentence(tokens, embeddings.unsqueeze(0),ind)
+                        attributions.append((tokens[1:-1],attribution[1:-1]))
+        #print(predictions,total_score)
+        return predictions, total_score, attributions
