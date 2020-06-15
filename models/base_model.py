@@ -30,7 +30,7 @@ class BaseModel():
     def optimize_parameters(self):
         pass
 
-    def setup(self, opt, dataset_size):
+    def setup(self, opt, dataset_size=0):
 
         if self.isTrain:
             self.optimizer = AdamW(self.net.parameters(),

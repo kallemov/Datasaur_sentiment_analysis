@@ -6,7 +6,7 @@ from utils.metrics import f1_score_func
 import torch
 
 if __name__ == '__main__':
-    #this code creates an instance for the training 
+    #this code creates an instance for prediction from dataset
     opt = PredictOptions().parse()   # get training options
 
     #load data for training
@@ -15,9 +15,12 @@ if __name__ == '__main__':
     dataloader = model.create_dataloader(opt, predict_data, None, randomSample=False)  # create a data_loader
     print('The number of prediction = %d' % len(predict_data))
 
-    model.setup(opt, len(dataloader))
+    model.setup(opt)
     start_time = time.time()  # timer for entire epoch
-    scores, total_score,attributes = model.predict(dataloader)
+
+    #predict sentence sentiments, overall sentiment, word_importance, and visualization
+    scores, total_score, attributes, vis_data_ig_records = model.predict(dataloader)
+
     print('Time Taken: %d sec' % (time.time() - start_time))
 
     scores=[(opt.inv_label_dict[x[0]],x[1]) for x in scores]

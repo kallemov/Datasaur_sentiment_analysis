@@ -1,12 +1,12 @@
-## AutoSAL: Automated Sentiment Analysis Labeling
+# AutoSAL: Automated Sentiment Analysis Labeling
 
 Bak Kallemov, Insight AI Felllowship AISV20B project.
 
 This is a consulting project for Datasaur.ai .
 
-The goal of this project is to leverage the existing labeling software from Datasaur.ai with automatic pre-labeling based on applying of sentiment analysis of fine-tuned BERT and XLNet classification models.
+The goal of this project is to leverage Datasaur.ai labeling software with automatic pre-labeling based on pretrained fine-tuned BERT and XLNet classification models for the sentiment analysis. The model uses a Integrated Gradient method to obtain a interpretable result for the highlighting a word importance in the sentiment analysis decisions.
 
-### Project description
+## Project description
 
 
 ## Requisites
@@ -18,7 +18,7 @@ can be found in requirements.txt
 
 - [Streamlit](streamlit.io)
 
-#### Installation
+### Installation
 To install the package above, please run:
 ```shell
 pip install -r requirements
@@ -31,7 +31,7 @@ to requests all command line parameters for training and evaluation run
 $ python train.py --help
 
 
-# Training
+## Training
 
 $ python train.py --dataroot <your_training_data_source> 
 
@@ -39,7 +39,7 @@ The dataloader currently accepts csv and json formats of input files for trainin
 
 There is a default datasets for binary and multi-class (positive/negative/neutral) sentiment analysis training constructed from three publicly available datasets 
 
-# Prediction
+## Prediction
 
 $python predict.py --dataroot <your_prediction_data_source> 
 
@@ -48,16 +48,16 @@ $python predict.py --dataroot <your_prediction_data_source>
 ## Test
 - Include instructions for how to run all tests after the software is installed
 
-# Example
+## Example
 
 ```
 
 
 ```
-# Example
+## Example
 
-# Step 1
-# Step 2
+## Step 1
+## Step 2
 ```
 
 

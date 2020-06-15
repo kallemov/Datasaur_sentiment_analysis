@@ -26,6 +26,9 @@ class BaseOptions():
           parser.add_argument('--load_epoch', type=str, default='latest', help='which epoch to load into the model. Default is to use latest cached model')
           parser.add_argument('--show_progress', type=str, default='tqdm', help='show training progress [none | tqdm |')
           parser.add_argument('--verbose', action='store_true', help='if specified, print more debugging information')
+          parser.add_argument('--output_attentions', action='store_true', help='output attentions in bert model')
+          parser.add_argument('--captum_visualization', action='store_true', help='visualize word importance')
+          parser.add_argument('--num_captum_iterations', type=int, default=100, help='number of iteration for the captum model. default is 100')
           
           self.initialized = True
           return parser

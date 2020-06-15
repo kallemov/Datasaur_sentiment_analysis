@@ -7,10 +7,7 @@ from .captum_bert import captum_bert
 
 class bertmodel(BaseModel):
     def modify_commandline_options(self,parser):
-        parser.add_argument('--output_attentions', action='store_true', help='output attentions in bert model')
-        parser.add_argument('--captum_visualization', action='store_true', help='visualize word importance')
         parser.add_argument('--pretrained_model_name', type=str, default="bert-base-uncased", help='bert pretrained model name')
-        parser.add_argument('--num_captum_iterations', type=int, default=100, help='number of iteration for the captum model. default is 100')
         return parser
 
     def __init__(self, opt):
@@ -19,7 +16,8 @@ class bertmodel(BaseModel):
         self.net = BertForSequenceClassification.from_pretrained(opt.pretrained_model_name,
                                                                  num_labels=opt.number_sentiments,
                                                                  output_attentions=opt.output_attentions,
-                                                                 output_hidden_states=(not opt.disable_word_importance))	
+                                                                 output_hidden_states=(not opt.disable_word_importance))
+        self.tokenizer = BertTokenizer.from_pretrained(opt.pretrained_model_name, do_lower_case=True)
         self.net.to(self.device)
 
     def setup_interpretation_model(self):
@@ -27,8 +25,6 @@ class bertmodel(BaseModel):
         self.interpretation_model.setup(self.net)
 
     def create_dataloader(self,opt, data, labels=None, randomSample=True):
-        
-        self.tokenizer = BertTokenizer.from_pretrained(opt.pretrained_model_name, do_lower_case=True)
         encoded_data = self.tokenizer.batch_encode_plus(
             data, 
             add_special_tokens=True, 
@@ -123,6 +119,7 @@ class bertmodel(BaseModel):
     
         predictions  =[]
         attributions =[]
+        vis_data_ig_records=[]
         
         total_score=[0]*self.number_sentiments
         for batch in dataloader:
@@ -150,7 +147,11 @@ class bertmodel(BaseModel):
                         except:
                             pass
                         #get attributes for the class ind
-                        attribution = self.interpretation_model.interpret_sentence(tokens, embeddings.unsqueeze(0),ind)
+                        attribution, vis_data_ig = self.interpretation_model.interpret_sentence(tokens, embeddings.unsqueeze(0),ind)
                         attributions.append((tokens[1:-1],attribution[1:-1]))
+                        if self.opt.captum_visualization:
+                           vis_data_ig_records.append(vis_data_ig)
+                           #self.interpretation_model.show_words_importance(vis_data_ig)
+                           
         #print(predictions,total_score)
-        return predictions, total_score, attributions
+        return predictions, total_score, attributions, vis_data_ig_records

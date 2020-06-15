@@ -58,8 +58,8 @@ class captum_bert():
         self.vis_data_records_ig = []
         self.isDefined = False
             
-    def show_words_importance(self):
-        visualization.visualize_text(self.vis_data_records_ig)
+    def show_words_importance(self, vis_data_records_ig):
+        visualization.visualize_text(vis_data_records_ig)
         
     def setup(self, model):#setup a captum wrapper model based on bert
         self.device = torch.device('cuda:{}'.format(self.opt.gpu_ids[0])) if self.opt.gpu_ids else torch.device('cpu')  # get device name: CPU or GPU
@@ -75,7 +75,7 @@ class captum_bert():
             print('word interpretation model is not setup up!')
             exit(1)
         
-        self.vis_data_records_ig = []
+        vis_data_records_ig = []
             
         # compute attributions and approximation delta using integrated gradients
         attributions, delta = self.ig.attribute(input_embedding, n_steps=self.opt.num_captum_iterations, return_convergence_delta=True)
@@ -94,8 +94,8 @@ class captum_bert():
             #add_attributions_to_visualizer(attributions_ig, tokens, pred, pred_ind, label, delta, vis_data_records_ig)
             self.add_attributions_to_visualizer(attributions, tokens, 
                                                   pred, pred_ind, label, delta, 
-                                                  self.vis_data_records_ig)
-        return attributions 
+                                                  vis_data_records_ig)
+        return attributions, vis_data_records_ig 
             
                 
     def add_attributions_to_visualizer(self, attributions, tokens, pred, pred_ind, label, delta, vis_data_records):
