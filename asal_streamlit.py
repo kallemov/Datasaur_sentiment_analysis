@@ -45,7 +45,8 @@ def format_word_importances(words, importances):
 
 st.title('AutoSAL')
 st.title('Automated Sentiment Analysis Labeling')
-
+st.subheader('Bak Kallemov, Insight AI Fellowship programm AISV20B')
+st.subheader('This is a consulting project for Datasaur.ai')
 opt, model = initialize_model()
 text_type = st.radio('',('single sentence', 'multi-sentence text', 'upload text file'))
 if text_type=='single sentence':
