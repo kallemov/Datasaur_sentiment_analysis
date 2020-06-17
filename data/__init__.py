@@ -12,7 +12,7 @@ def create_training_data(opt):
     
 def create_polarity_data(opt):
     if opt.dataroot=='default':
-        dataset_name='data/polarity3_data/twitter_polarity3.csv'
+        dataset_name='data/polarity3_data/amazon_combined_polarity3.csv'
     else:
         dataset_name=opt.dataroot
     if os.path.exists(dataset_name):
@@ -24,10 +24,10 @@ def create_polarity_data(opt):
         else:
             print("%s file type is not supported." % dataset_name)
             exit(0)
+        df['sentiment'] = df.sentiment.replace(opt.label_dict)
+        if df.shape[0]>opt.data_samples_max_size:
+            df=df.sample(n=opt.data_samples_max_size,axis=0)
         if opt.isTrain:
-            df['sentiment'] = df.sentiment.replace(opt.label_dict)
-            if df.shape[0]>opt.data_samples_max_size:
-                df=df.sample(n=opt.data_samples_max_size,axis=0)
             X_train, X_val, y_train, y_val = train_test_split(df.text.values, 
                                                         df.sentiment.values, 
                                                         test_size=0.10, 
@@ -35,7 +35,7 @@ def create_polarity_data(opt):
                                                         stratify=df.sentiment.values)
             return X_train, y_train, X_val, y_val
         else:
-            return df.text.values
+            return df.text.values, df.sentiment.values
     else:
         print("%s path does not exist." % dataset_name)
         exit(0)

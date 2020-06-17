@@ -26,7 +26,7 @@ if __name__ == '__main__':
     
     model = create_model(opt)      # create a model given opt.model and other options
     dataloader_train = model.create_dataloader(opt, train_data, train_labels, randomSample=True)  # create a data_loader
-    dataloader_val = model.create_dataloader(opt, val_data, val_labels, randomSample=False)    
+    dataloader_val = model.create_dataloader(opt, val_data, val_labels, randomSample=True)    
 
     print('The number of training samples = %d' % (len(dataloader_train)*opt.num_epochs))
 
@@ -72,10 +72,11 @@ if __name__ == '__main__':
         loss_train_avg = loss_train_total/len(dataloader_train)            
         val_loss, predictions, true_vals = model.evaluate(dataloader_val)
        
-        tqdm.write(f'Training loss: {loss_train_avg}')
-        tqdm.write(f'Validation loss: {val_loss}')
-        tqdm.write(f'F1 Score (Weighted): {metrics.f1_score_func(predictions, true_vals)}')
-        tqdm.write(metrics.classification_report_func(predictions, true_vals,opt.label_dict.keys()))
+        print(f'Training loss: {loss_train_avg}')
+        print(f'Validation loss: {val_loss}')
+        print(f'F1 Score (Weighted): {metrics.f1_score_func(predictions, true_vals)}')
+        print(f'AUC Scores: {metrics.auc_score_func(predictions, true_vals)}')
+        print(metrics.classification_report_func(predictions, true_vals,opt.label_dict.keys()))
         tqdm.write(f'End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.num_epochs, time.time() - epoch_start_time))
         
         writer.add_scalars('Total loss', {'training loss':loss_train_avg,'validation loss':val_loss}, total_iters)
