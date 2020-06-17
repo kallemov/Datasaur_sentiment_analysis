@@ -43,8 +43,8 @@ def format_word_importances(words, importances):
     return "".join(tags)
 
 
-st.title('AutoSAL')
-st.title('Automated Sentiment Analysis Labeling')
+st.title('AutoSAIL')
+st.title('Automated Sentiment Analysis Intepretable Labeling')
 st.subheader('Bak Kallemov, Insight AI Fellowship programm AISV20B')
 st.subheader('This is a consulting project for Datasaur.ai')
 opt, model = initialize_model()
