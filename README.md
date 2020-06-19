@@ -8,15 +8,13 @@ The goal of this project is to leverage Datasaur.ai labeling software with autom
 
 ## Project description
 
+Streamlit demo: 
+To start it use:
+```
+streamlit asail_streamlit.py -- <options>
+```
 
-## Requisites
-
-can be found in requirements.txt
-
-
-### Dependencies
-
-- [Streamlit](streamlit.io)
+![](docs/output_cropped.gif)
 
 ### Installation
 To install the package above, please run:
@@ -28,36 +26,70 @@ pip install -r requirements
 
 to requests all command line parameters for training and evaluation run
 
-$ python train.py --help
-
+```
+ python train.py --help
+```
 
 ## Training
 
-$ python train.py --dataroot <your_training_data_source> 
+```
+python train.py --dataroot <your_training_data_source> 
+
+```
 
 The dataloader currently accepts csv and json formats of input files for training
 
 There is a default datasets for binary and multi-class (positive/negative/neutral) sentiment analysis training constructed from three publicly available datasets 
 
-## Prediction
-
-$python predict.py --dataroot <your_prediction_data_source> 
-
-## Configs
-
-## Test
-- Include instructions for how to run all tests after the software is installed
-
-## Example
+## Prediction and testing
 
 ```
-
-
-```
-## Example
-
-## Step 1
-## Step 2
+python predict.py [--dataroot <your_prediction_data_source>] 
 ```
 
+to get evaluation on test dataset
+
+```
+python test.py --dataroot <your_test_datasource>
+```
+
+##Running RESTful web service using Flask
+To start the server use:
+
+```
+python api.py [--<model options>] 
+```
+
+The API is desined to receive json requests using route '/application/get_prediction'
+
+POST format:
+
+```
+{
+  "sentences": [
+    {
+      "id": 54,
+      "text": "A masterpiece four years in the making ."
+    }
+  ]
+}
+```
+
+the return json format is 
+
+```
+{
+  "data": [
+    {
+      "confidence_score": 0.9998,
+      "sentence": {
+        "id": 54,
+        "token_importances": [0.32, -0.28, 0.66, 1.0, -1.0, 0.71, 0.17, -0.6],
+        "tokens": ["a", "masterpiece", "four", "years", "in", "the", "making", "."]
+      },
+      "sentiment": "positive"
+    } 
+  ]
+}
+```
 
