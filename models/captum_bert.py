@@ -88,7 +88,13 @@ class captum_bert():
         attributions = attributions.detach().cpu().numpy()
         attributions[0]=0
         attributions[-1]=0
-        attributions /=max(attributions)
+        max_a, min_a = max(attributions[1:-1]), min(attributions[1:-1])
+        if (max_a - min_a)==0:
+            attributions /=max_a
+        else:
+            attributions /= 0.5*(max_a - min_a)
+            attributions -= 1+2.*min_a/(max_a - min_a)
+            
         #print(attributions)
         if self.opt.captum_visualization:
             #add_attributions_to_visualizer(attributions_ig, tokens, pred, pred_ind, label, delta, vis_data_records_ig)
