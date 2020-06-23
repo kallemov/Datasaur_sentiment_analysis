@@ -92,4 +92,16 @@ the return json format is
   ]
 }
 ```
+## Running Dockerized Streamlit app
+
+Build docker image 
+```
+docker build -f docker/Dockerfile -t streamlit .
+```
+
+Run streamlit in the container using built image using port:8501
+```
+docker run -p 8501:8501 streamlit
+```
+
 
