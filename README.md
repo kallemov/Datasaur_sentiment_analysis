@@ -1,4 +1,4 @@
-# AutoSAL: Automated Sentiment Analysis Labeling
+# AutoSAIL: Automated Sentiment Analysis Interpretable Labeling
 
 Bak Kallemov, Insight AI Felllowship AISV20B project.
 
